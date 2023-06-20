@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<?xml version="1.0" encoding="utf-8"><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title data-lang="title">Twinkl Percussion</title>
+    <link rel="stylesheet" href="instruments-33-twinkl-buttons.css">
+    <link rel="stylesheet" href="instruments-34-game-ui.css">
+    <link rel="stylesheet" href="instruments-35-instrument.css">
+    
+    <script src="instruments-1-jquery-1.12.4.js"></script>
+    <!--<script src="/js/vendor/flexibility.js"></script>-->
+    <script src="instruments-2-createjs-2015.11.26.min.js"></script>
+    <script src="instruments-3-howler.min.js"></script>
+    <script src="instruments-4-InstrumentPercussion.js"></script>
+    <script src="instruments-5-micromodal.min.js"></script>
+    <script src="instruments-6-inline-script.js"></script>
+    <script src="instruments-7-utils.js"></script>
+    <script src="instruments-8-game.js"></script>
+    <script src="instruments-9-instrument.js"></script>
+    <script src="instruments-28-manifest-inline-script.js"></script>
+    <script src="instruments-29-manifest-inline-script.js"></script>
+</head>
+
+<body onload="init()">
+
+<div id="wrapper" class="go-interactive interactive-theme-blue perc">  <!-- or purple ? -->
+
+    <div class="title-screen perc" id="titleScreen">
+        <canvas id="title-canvas" width="1280" height="720"></canvas>
+        <span class="title-text perc" data-lang="title"></span>
+        <span class="title-subtext perc theme-text" data-lang="subtitle"></span>
+        <div id="lets-go-button" class="text-button central visible">Let's Go!</div>
+        <img src="instruments-30-Twinkl-Logo-White.svg" class="title-logo" id="title-logo">
+        <div class="title-logo-backing perc"></div>
+    </div>
+
+    <div class="ingame-sidebar top">
+        <div class="button-backing"></div>
+        <div class="button-container frosty">
+            <span class="font-button close" id="close-button"><span class="path1"></span><span class="path2"></span></span>
+            <span data-micromodal-trigger="help-modal" class="font-button help" id="help-button"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span>
+            <span class="font-button reset" id="reset-button"><span class="path1"></span><span class="path2"></span></span>
+        </div>
+        <div class="spacer large">
+
+        </div>
+        <div class="button-container spacer small">
+            <p class="label central score-text" data-lang="score">Score: </p>
+            <p class="label central score-text" id="score-text">0</p>
+        </div>
+    </div>
+    <div class="sound-edit-bar perc">
+        <div class="spacer small" id="controls"></div>
+        <div class="light-content soundset-change-container perc">
+            <span class="font-button prev" id="prev-button"><span class="path1"></span><span class="path2"></span></span>
+            <p class="label central" id="sound-set-text">1. Bongos</p>
+            <span class="font-button next" id="next-button"><span class="path1"></span><span class="path2"></span></span>
+        </div>
+        <div class="spacer small"></div>
+    </div>
+    <div class="trigger-container perc" id="triggers">
+        <button class="trigger perc big bongo one" id="trigger0"></button>
+        <button class="trigger perc big bongo two" id="trigger1"></button>
+    </div>
+    <div class="metronome" id="metronome">
+        <p class="label central metronome-text" id="metronome-text">1</p>
+    </div>
+    <div class="ingame-sidebar bottom">
+        <div class="button-container">
+            <span class="font-button expand-screen" id="fullscreen-button"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></span>
+            <span class="font-button sound-off" id="mute-button"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
+            <div class="text-button bottom-bar" id="creative-button" data-lang="creative"></div>
+            <div class="text-button bottom-bar" id="challenge-button" data-lang="challenge"></div>
+        </div>
+        <div class="spacer large">
+
+        </div>
+    </div>
+
+    <!--<div class="bottom-buttons">-->
+    <!--</div>-->
+
+    <div class="go-burn-container">
+        <img src="instruments-31-Twinkl-Burn.svg">
+    </div>
+
+    <div class="perc-game" id="perc-game">
+        <span class="font-button play perc" id="creative-play"><span class="path1"></span><span class="path2"></span></span>
+        <div class="perc-grid">
+            <table class="perc-actual-grid">
+                <tr class="perc-grid-row">
+                    <td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td>
+                    <td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td><td class="one"></td>
+                </tr>
+                <tr class="perc-grid-row">
+                    <td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td>
+                    <td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td><td class="two"></td>
+                </tr>
+            </table>
+            <div class="perc-grid-progress"></div>
+            <div style="overflow-x: auto">
+                <table class="labels">
+                    <tr>
+                        <td>1</td><td>2</td><td>3</td><td>4</td><td>1</td><td>2</td><td>3</td><td>4</td><td>1</td><td>2</td><td>3</td><td>4</td><td>1</td><td>2</td><td>3</td><td>4</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p class="encouragement left animated"></p>
+        <p class="encouragement right animated"></p>
+    </div>
+
+    <div class="modal" id="help-modal" aria-hidden="true">
+        <div class="modal-overlay" tabindex="-1">
+            <div class="modal-container animated bounceInUp" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <header>
+                    <!--<span class="font-button close" aria-label="Close modal" data-micromodal-close><span class="path1" data-micromodal-close></span><span class="path2" data-micromodal-close></span></span>-->
+                    <h2 id="modal-1-title" data-lang="title" class="text-blue"></h2>
+                </header>
+                <div class="modal-content" id="modal-1-content" data-lang="help">
+                </div>
+                <div class="text-button play visible" aria-label="Close modal" id="play-button" data-micromodal-close>Play</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="creative-modal" aria-hidden="true">
+        <div class="modal-overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal-container animated bounceInUp" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+                <header>
+                    <h2 id="modal-2-title" data-lang="creative" class="text-blue"></h2>
+                </header>
+                <div class="modal-content" id="modal-2-content" data-lang="creativeHelp">
+                </div>
+                <div class="text-button play visible" aria-label="Close modal" onclick="percussion.start()" data-micromodal-close>Play</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="challenge-modal" aria-hidden="true">
+        <div class="modal-overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal-container animated bounceInUp" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+                <header>
+                    <h2 id="modal-3-title" data-lang="challenge" class="text-blue"></h2>
+                </header>
+                <div class="modal-content" id="modal-3-content" data-lang="challengeHelp">
+                </div>
+                <div class="text-button play visible" aria-label="Close modal" onclick="percussion.start()" data-micromodal-close>Play</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="endgame-modal" aria-hidden="true">
+        <div class="modal-overlay" tabindex="-1">
+            <div class="modal-container animated bounceInUp" role="dialog" aria-modal="true" aria-labelledby="modal-4-title">
+                <header>
+                    <!--<span class="font-button close" aria-label="Close modal" data-micromodal-close><span class="path1" data-micromodal-close></span><span class="path2" data-micromodal-close></span></span>-->
+                    <h2 id="modal-4-title" data-lang="welldone" class="text-blue"></h2>
+                </header>
+                <div class="modal-content" id="modal-4-content">
+                    <div data-lang="result"></div>
+                    <div class="text-button central play-again" id="play-again-button" data-micromodal-close>Play Again</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="preload-div" class="loading">
+    <span style="display: inline-block; height: 100%; vertical-align: middle;"></span>
+    <img src="instruments-32-twinkl_preloader.gif" style="vertical-align: middle; max-height: 100%">
+</div>
+
+</body>
+</html>
